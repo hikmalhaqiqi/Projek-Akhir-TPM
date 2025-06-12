@@ -110,7 +110,10 @@ class _CreateBarangPageState extends State<CreateBarangPage> {
 
       if (response == true) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Berhasil menambah barang baru")),
+          const SnackBar(
+            content: Text("Berhasil menambah barang baru"),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomePage()),

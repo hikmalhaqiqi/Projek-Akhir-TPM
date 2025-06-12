@@ -3,11 +3,16 @@ import 'package:proyek_tpm_praktikum/models/barang_model.dart';
 import 'package:proyek_tpm_praktikum/pages/edit_page.dart';
 import 'package:proyek_tpm_praktikum/services/barang_services.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final int id;
 
   const DetailPage({super.key, required this.id});
 
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +32,7 @@ class DetailPage extends StatelessWidget {
   // Widget untuk menampilkan detail pakaian dari API
   Widget _barangDetail() {
     return FutureBuilder(
-      future: BarangService.getBarangById(id),
+      future: BarangService.getBarangById(widget.id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text("Error: ${snapshot.error}");
@@ -76,11 +81,15 @@ class DetailPage extends StatelessWidget {
           _infoText("Kondisi", barang.kondisi),
           _infoText("Harga", "Rp${barang.harga ?? 0}"),
 
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Center(
-              child: SizedBox(
-                width: 170,
+          // Row untuk Tombol Edit dan Hapus
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              // Tombol Edit
+              SizedBox(
+                width:
+                    MediaQuery.of(context).size.width *
+                    0.43, // 43% dari lebar layar
                 height: 40,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -90,23 +99,118 @@ class DetailPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditBarangPage(id: id),
+                        builder: (context) => EditBarangPage(id: widget.id),
                       ),
-                      
                     );
+
+                    // Refresh data jika edit berhasil
+                    if (result == true) {
+                      setState(() {
+                        // Refresh detail page
+                      });
+                    }
                   },
-                  child: const Text("Beli", style: TextStyle(fontSize: 15)),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.edit, size: 16),
+                      SizedBox(width: 4),
+                      Text("Edit", style: TextStyle(fontSize: 14)),
+                    ],
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(width: 10), // jarak antar tombol
+              // Tombol Hapus
+              SizedBox(
+                width:
+                    MediaQuery.of(context).size.width *
+                    0.43, // 43% dari lebar layar
+                height: 40,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () => _showDeleteConfirmation(context, widget.id),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.delete, size: 16),
+                      SizedBox(width: 4),
+                      Text("Hapus", style: TextStyle(fontSize: 14)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
+  }
+
+  // Method untuk konfirmasi hapus
+  void _showDeleteConfirmation(BuildContext context, int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Konfirmasi Hapus"),
+          content: const Text("Apakah Anda yakin ingin menghapus barang ini?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Batal"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _deleteBarang(id);
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text("Hapus"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Method untuk menghapus barang
+  Future<void> _deleteBarang(int id) async {
+    try {
+      final response = await BarangService.deleteBarang(id);
+
+      if (response == true) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Berhasil menghapus barang"),
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          // Kembali ke halaman sebelumnya dengan result true untuk refresh
+          Navigator.pop(context, true);
+        }
+      } else {
+        throw Exception("Gagal menghapus barang");
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: $e"), backgroundColor: Colors.red),
+        );
+      }
+    }
   }
 
   // Widget untuk menampilkan informasi berlabel
@@ -131,5 +235,4 @@ class DetailPage extends StatelessWidget {
       ),
     );
   }
-  
 }

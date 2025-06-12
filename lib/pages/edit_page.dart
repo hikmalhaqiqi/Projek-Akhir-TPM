@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek_tpm_praktikum/models/barang_model.dart';
+import 'package:proyek_tpm_praktikum/pages/home_page.dart';
 import 'package:proyek_tpm_praktikum/services/barang_services.dart';
 
 class EditBarangPage extends StatefulWidget {
@@ -74,15 +75,11 @@ class _EditBarangPageState extends State<EditBarangPage> {
             ),
           );
 
-          // Kembali ke halaman sebelumnya dengan result true untuk refresh data
           Navigator.pop(context, true);
 
-          // Atau jika ingin langsung ke HomePage, gunakan:
-          // Navigator.pushNamedAndRemoveUntil(
-          //   context,
-          //   '/home', // Ganti dengan route name HomePage Anda
-          //   (route) => false,
-          // );
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
         }
       } else {
         throw Exception("Gagal memperbarui barang");
@@ -259,6 +256,7 @@ class _EditBarangPageState extends State<EditBarangPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: DropdownButtonFormField<String>(
+        dropdownColor: Colors.white,
         value: selectedValue,
         decoration: InputDecoration(
           labelText: label,

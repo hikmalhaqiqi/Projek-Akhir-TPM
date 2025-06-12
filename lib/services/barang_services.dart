@@ -90,7 +90,7 @@ class BarangService {
   }
 
   static Future<bool> deleteBarang(int id) async {
-    final response = await http.delete(Uri.parse("$baseUrl/$id"));
+    final response = await http.delete(Uri.parse("$baseUrl/Barang/$id"));
 
     return response.statusCode == 200; // 200 OK
   }
