@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyek_tpm_praktikum/models/barang_model.dart';
 import 'package:proyek_tpm_praktikum/pages/edit_page.dart';
+import 'package:proyek_tpm_praktikum/pages/home_page.dart';
 import 'package:proyek_tpm_praktikum/services/barang_services.dart';
 
 class DetailPage extends StatefulWidget {
@@ -163,6 +164,7 @@ class _DetailPageState extends State<DetailPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: const Text("Konfirmasi Hapus"),
           content: const Text("Apakah Anda yakin ingin menghapus barang ini?"),
           actions: [
@@ -198,8 +200,9 @@ class _DetailPageState extends State<DetailPage> {
             ),
           );
 
-          // Kembali ke halaman sebelumnya dengan result true untuk refresh
-          Navigator.pop(context, true);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
         }
       } else {
         throw Exception("Gagal menghapus barang");
