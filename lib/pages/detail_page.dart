@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek_tpm_praktikum/models/barang_model.dart';
+import 'package:proyek_tpm_praktikum/pages/edit_page.dart';
 import 'package:proyek_tpm_praktikum/services/barang_services.dart';
 
 class DetailPage extends StatelessWidget {
@@ -17,6 +18,7 @@ class DetailPage extends StatelessWidget {
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
         backgroundColor: Colors.blueGrey,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(padding: const EdgeInsets.all(20), child: _barangDetail()),
     );
@@ -80,22 +82,25 @@ class DetailPage extends StatelessWidget {
               child: SizedBox(
                 width: 170,
                 height: 40,
-                // child: ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.blueGrey,
-                //     foregroundColor: Colors.white,
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(8),
-                //     ),
-                //   ),
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(builder: (context) => BeliPage(id: id)),
-                //     );
-                //   },
-                //   child: const Text("Beli", style: TextStyle(fontSize: 15)),
-                // ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueGrey,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditBarangPage(id: id),
+                      ),
+                      
+                    );
+                  },
+                  child: const Text("Beli", style: TextStyle(fontSize: 15)),
+                ),
               ),
             ),
           ),
@@ -126,4 +131,5 @@ class DetailPage extends StatelessWidget {
       ),
     );
   }
+  
 }

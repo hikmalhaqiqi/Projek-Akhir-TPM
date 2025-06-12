@@ -81,7 +81,7 @@ class BarangService {
 
   static Future<bool> updateBarang(Barang barang, int id) async {
     final response = await http.patch(
-      Uri.parse("$baseUrl/$id"),
+      Uri.parse("$baseUrl/update/$id"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(barang.toJson()),
     );

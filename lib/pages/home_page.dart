@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(fontSize: 16, color: Colors.white),
         ),
         backgroundColor: Colors.blueGrey,
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
             onPressed: _logout,
@@ -369,7 +370,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blueGrey, // latar belakang FAB jadi putih
         child: const Icon(
           Icons.add,
-          color: Colors.black,
+          color: Colors.white, // warna ikon jadi putih biar kontras
         ), // warna ikon jadi hitam biar kontras
       ),
     );

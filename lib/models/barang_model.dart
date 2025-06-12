@@ -37,17 +37,16 @@ class Barang {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['nama'] = this.nama;
-    data['kategori'] = this.kategori;
-    data['deskripsi'] = this.deskripsi;
-    data['foto'] = this.foto;
-    data['ukuran'] = this.ukuran;
-    data['jenis_kelamin'] = this.jenisKelamin;
-    data['merk'] = this.merk;
-    data['kondisi'] = this.kondisi;
-    data['harga'] = this.harga;
+    final Map<String, dynamic> data = {};
+    if (nama != null) data['nama'] = nama;
+    if (kategori != null) data['kategori'] = kategori;
+    if (deskripsi != null) data['deskripsi'] = deskripsi;
+    if (ukuran != null) data['ukuran'] = ukuran;
+    if (jenisKelamin != null) data['jenis_kelamin'] = jenisKelamin;
+    if (merk != null) data['merk'] = merk;
+    if (kondisi != null) data['kondisi'] = kondisi;
+    if (harga != null) data['harga'] = harga;
+    if (foto != null) data['foto'] = foto;
     return data;
   }
 }
